@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # script that sets up your web servers for the deployment of web_static
-sudo apt update -y
-sudo apt install nginx -y
-sudo ufw allow 'Nginx HTTP'
+apt-get update 
+apt-get -y install nginx 
+ufw allow 'Nginx HTTP'
 sudo service nginx start
-sudo mkdir -p /data/web_static/releases/test/
-sudo mkdir -p /data/web_static/shared
+mkdir -p /data/web_static/releases/test/
+mkdir -p /data/web_static/shared
 echo "<html>
   <head>
   </head>
@@ -13,8 +13,7 @@ echo "<html>
     Holberton School
   </body>
 </html>" >  /data/web_static/releases/test/index.html
-sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
-sudo chown -hR ubuntu:ubuntu /data/
-sudo sed -i '52c \ \n\tlocation /hbnb_static {\n\t\talias /data/web_static/current;' /etc/nginx/sites-available/default
-sudo nginx -t
+ln -sf /data/web_static/releases/test/ /data/web_static/current
+chown -hR ubuntu:ubuntu /data/
+sed -i '52 i \\n\tlocation /hbnb_static {\n\talias /data/web_static/current;\n\t}' /etc/nginx/sites-available/default
 sudo service nginx restart
