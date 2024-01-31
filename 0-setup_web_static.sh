@@ -5,6 +5,7 @@ sudo apt install nginx -y
 sudo ufw allow 'Nginx HTTP'
 sudo service nginx start
 sudo mkdir -p /data/web_static/releases/test/
+sudo mkdir -p /data/web_static/shared
 echo "Hello from the server" | sudo tee /data/web_static/releases/test/index.html > /dev/null
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 sudo chown -hR ubuntu:ubuntu /data/
