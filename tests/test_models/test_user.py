@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" this test for user"""
+""" """
 import os
 from sqlalchemy import Column
 

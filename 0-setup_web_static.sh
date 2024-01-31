@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+sudo apt update -y
+sudo apt install nginx -y
+sudo ufw allow 'Nginx HTTP'
+sudo service nginx start
+sudo mkdir -p /data/web_static/releases/test/
+sudo echo "Hello from the server" > /data/web_static/releases/test/index.html
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
+sudo chown -hR ubuntu:ubuntu /data/
+sudo sed -i '52 i \\n\tlocation /hbnb_static {\n\talias /data/web_static/current;\n\t}'  /etc/nginx/sites-available/default
+sudo nginx -t
+sudo service nginx restart
