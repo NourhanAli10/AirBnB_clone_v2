@@ -10,38 +10,21 @@ env.hosts = ["54.90.37.130", "54.90.47.215"]
 
 
 def do_deploy(archive_path):
-    """
-    Distributes an archive to the web servers
-    """
-    if not exists(archive_path):
+    """distributes an archive to the web servers"""
+    if exists(archive_path) is False:
         return False
-
     try:
-        # Upload the archive to /tmp/
-        put(archive_path, "/tmp/")
-
-        # Extract archive to /data/web_static/releases/
-        archive_filename = archive_path.split("/")[-1]
-        folder_name = "/data/web_static/releases/{}".format(
-            archive_filename.split(".")[0])
-        run("mkdir -p {}".format(folder_name))
-        run("tar -xzf /tmp/{} -C {}".format(archive_filename, folder_name))
-
-        # Remove the archive from the server
-        run("rm /tmp/{}".format(archive_filename))
-
-        # Move contents to the proper location
-        run("mv {}/web_static/* {}".format(folder_name, folder_name))
-
-        # Remove the now empty web_static directory
-        run("rm -rf {}/web_static".format(folder_name))
-
-        # Update the symbolic link
-        run("rm -rf /data/web_static/current")
-        run("ln -s {} /data/web_static/current".format(folder_name))
-
-        print("New version deployed!")
+        file_n = archive_path.split("/")[-1]
+        no_ext = file_n.split(".")[0]
+        path = "/data/web_static/releases/"
+        put(archive_path, '/tmp/')
+        run('mkdir -p {}{}/'.format(path, no_ext))
+        run('tar -xzf /tmp/{} -C {}{}/'.format(file_n, path, no_ext))
+        run('rm /tmp/{}'.format(file_n))
+        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, no_ext))
+        run('rm -rf {}{}/web_static'.format(path, no_ext))
+        run('rm -rf /data/web_static/current')
+        run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
         return True
-    except Exception as e:
-        print(e)
+    except:
         return False
