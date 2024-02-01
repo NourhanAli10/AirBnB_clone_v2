@@ -21,3 +21,7 @@ def do_pack():
         return "versions/{}".format(file_name)
     else:
         return None
+
+
+if __name__ == "__main__":
+    do_pack()
