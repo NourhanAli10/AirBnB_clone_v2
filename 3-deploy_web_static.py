@@ -30,7 +30,7 @@ def do_pack():
 
 def do_deploy(archive_path):
     """Deploys the web_static archive to the web servers."""
-    if not exists(archive_path):
+    if not os.path.exists(archive_path):
         return False
 
     try:
