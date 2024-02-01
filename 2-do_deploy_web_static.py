@@ -12,37 +12,33 @@ env.hosts = ["54.90.37.130", "54.90.47.215"]
 
 
 def do_deploy(archive_path):
-    """Distributes an archive to the web servers"""
-    if not exists(archive_path):
-        return False
+    """ distributes an archive to my web servers
+    """
+    if exists(archive_path) is False:
+        return False  # Returns False if the file at archive_path doesnt exist
+    filename = archive_path.split('/')[-1]
+    # so now filename is <web_static_2021041409349.tgz>
+    no_tgz = '/data/web_static/releases/' + "{}".format(filename.split('.')[0])
+    # curr = '/data/web_static/current'
+    tmp = "/tmp/" + filename
 
     try:
-        # Upload archive to /tmp/ directory on the web server
         put(archive_path, "/tmp/")
-
-        # Extract archive to /data/web_static/releases/<archive_filename_without_extension>/
-        archive_filename = archive_path.split("/")[-1]
-        folder_name = archive_filename.split(".")[0]
-        release_path = "/data/web_static/releases/{}".format(folder_name)
-        run("sudo mkdir -p {}".format(release_path))
-        run("sudo tar -xzf /tmp/{} -C {}".format(archive_filename, release_path))
-
-        # Remove the archive from the web server
-        run("sudo rm /tmp/{}".format(archive_filename))
-
-        # Move contents to the current version
-        run("sudo mv {}/web_static/* {}/".format(release_path, release_path))
-        run("sudo rm -rf {}/web_static".format(release_path))
-
-        # Remove the old symbolic link
-        run("sudo rm -rf /data/web_static/current")
-
-        # Create a new symbolic link
-        run("sudo ln -s {} /data/web_static/current".format(release_path))
-
-        print("New version deployed!")
+        # ^ Upload the archive to the /tmp/ directory of the web server
+        run("mkdir -p {}/".format(no_tgz))
+        # Uncompress the archive to the folder /data/web_static/releases/
+        # <archive filename without extension> on the web server
+        run("tar -xzf {} -C {}/".format(tmp, no_tgz))
+        run("rm {}".format(tmp))
+        run("mv {}/web_static/* {}/".format(no_tgz, no_tgz))
+        run("rm -rf {}/web_static".format(no_tgz))
+        # ^ Delete the archive from the web server
+        run("rm -rf /data/web_static/current")
+        # Delete the symbolic link /data/web_static/current from the web server
+        run("ln -s {}/ /data/web_static/current".format(no_tgz))
+        # Create a new the symbolic link /data/web_static/current on the
+        # web server, linked to the new version of your code
+        # (/data/web_static/releases/<archive filename without extension>)
         return True
-
     except Exception as e:
-        print("Deployment failed: {}".format(str(e)))
         return False
