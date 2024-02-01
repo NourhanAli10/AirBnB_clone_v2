@@ -14,11 +14,10 @@ def do_pack():
     """
     if not os.path.exists("versions"):
         local("mkdir -p versions")
-    now = datetime.now()
-    timestamp = now.strftime("%Y%m%d%H%M%S")
-    archive_name = "web_static_{}.tgz".format(timestamp)
-    result = local("tar -cvzf versions/{} web_static".format(archive_name), capture=True)
-    if result.succeeded:
-        return "versions/{}".format(archive_name)
+    date = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    file_name = "web_static_{}.tgz".format(date)
+    path = local('tar -cvzf versions/{} web_static/'.format(file_name))
+    if path.succeeded:
+        return "versions/{}".format(file_name)
     else:
         return None
