@@ -21,11 +21,12 @@ def do_pack():
         local("mkdir -p versions")
     date = datetime.now().strftime("%Y%m%d%H%M%S")
     file_name = "web_static_{}.tgz".format(date)
-    path = local('tar -cvzf versions/{} web_static/'.format(file_name))
-    if path.succeeded:
-        return "versions/{}".format(file_name)
-    else:
+    path = local('tar -cvzf versions/{} web_static/'.format(file_name),
+                 capture=True)
+    if path.failed:
         return None
+    else:
+        return "versions/{}".format(file_name)
 
 
 def do_deploy(archive_path):
