@@ -9,6 +9,7 @@ from fabric.api import env, local, put, run
 
 env.hosts = ["54.90.37.130", "54.90.47.215"]
 
+
 def do_pack():
     """
     A function that generates an archive
