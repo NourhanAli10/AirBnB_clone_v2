@@ -38,9 +38,10 @@ def python_route(text="is cool"):
     return "Python {}".format(text)
 
 
-@app.route('/number/<int:n>', strict_slashes=False)
+@app.route('/number/<n>', strict_slashes=False)
 def number_route(n):
     """function to print number if it is an integer"""
+    n = int(n)
     return "{:d} is a number".format(n)
 
 
