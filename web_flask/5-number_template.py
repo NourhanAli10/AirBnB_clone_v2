@@ -4,6 +4,7 @@ this module starts a Flask web application
 """
 
 from flask import Flask
+from flask import render_template
 
 
 app = Flask(__name__)
@@ -42,6 +43,12 @@ def python_route(text="is cool"):
 def number_route(n):
     """function to print number if it is an integer"""
     return "{:d} is a number".format(n)
+
+
+@app.route('/number_template/<int:n>', strict_slashes=False)
+def number_template(n):
+    """function to print number if it is an integer"""
+    return render_template('5-number.html', n=n)
 
 
 if __name__ == '__main__':
