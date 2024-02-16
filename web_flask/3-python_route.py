@@ -29,12 +29,13 @@ def c_route(text):
     return "C {}".format(text)
 
 
+@app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def python_route(text="is cool"):
     """function to print python + text when
     following the url /python/<text>"""
     text = text.replace('_', ' ')
-    return "python {}".format(text)
+    return "Python {}".format(text)
 
 
 if __name__ == '__main__':
