@@ -5,13 +5,20 @@ this module starts a Flask web application
 
 from flask import Flask
 
+
 app = Flask(__name__)
 
 
 @app.route('/', strict_slashes=False)
-def hello():
+def hello_hbnb():
     """function to print hello HBNB when following the url /"""
-    return "<p>Hello HBNB!</p>"
+    return "Hello HBNB!"
+
+
+@app.route('/hbnb', strict_slashes=False)
+def print_hbnb():
+    """function to print HBNB when following the url /hbnb"""
+    return "HBNB"
 
 
 if __name__ == '__main__':
