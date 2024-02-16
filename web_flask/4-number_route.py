@@ -42,7 +42,7 @@ def python_route(text="is cool"):
 def number_route(n):
     """function to print number if it is an integer"""
     if n.isdigit():
-        return "{} is a number".format(n)
+        return "{:d} is a number".format(n)
 
 
 if __name__ == '__main__':
