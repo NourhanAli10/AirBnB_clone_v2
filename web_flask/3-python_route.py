@@ -26,7 +26,7 @@ def c_route(text):
     """function to print python + text when
     following the url /c/<text>"""
     text = text.replace('_', ' ')
-    return "c {}".format(text)
+    return "C {}".format(text)
 
 
 @app.route('/python/<text>', strict_slashes=False)
