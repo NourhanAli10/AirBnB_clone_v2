@@ -4,8 +4,6 @@ This module starts a Flask web application
 """
 
 from flask import Flask, render_template
-import sys
-sys.path.append('../')
 from models import storage
 from models import *
 

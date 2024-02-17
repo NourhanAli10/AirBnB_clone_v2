@@ -1,29 +1,26 @@
 #!/usr/bin/python3
 """
-This module starts a Flask web application
+starts a Flask web application
 """
 
 from flask import Flask, render_template
-import sys
-sys.path.append('../')
-from models import storage
 from models import *
-
+from models import storage
 app = Flask(__name__)
 
 
 @app.route('/cities_by_states', strict_slashes=False)
 def cities_by_states():
-    """display a page with sorted states"""
+    """display the states and cities listed in alphabetical order"""
     states = storage.all("State").values()
-    sorted_states = sorted(states, key=lambda x: x.name)
-    return render_template('8-cities_by_states.html', sorted_states=sorted_states)
+    return render_template('8-cities_by_states.html', states=states)
 
 
 @app.teardown_appcontext
-def remove_session(exception):
+def teardown_db(exception):
+    """closes the storage on teardown"""
     storage.close()
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port='5000')
