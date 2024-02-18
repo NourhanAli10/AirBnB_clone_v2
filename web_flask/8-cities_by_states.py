@@ -6,6 +6,7 @@ starts a Flask web application
 from flask import Flask, render_template
 from models import *
 from models import storage
+from models.state import State
 app = Flask(__name__)
 
 
@@ -13,7 +14,9 @@ app = Flask(__name__)
 def cities_by_states():
     """display the states and cities listed in alphabetical order"""
     states = storage.all(State).values()
-    return render_template('8-cities_by_states.html', states=states)
+    sorted_states = sorted(states, key=lambda x: x.name)
+    return render_template(
+        '8-cities_by_states.html', sorted_states=sorted_states)
 
 
 @app.teardown_appcontext
