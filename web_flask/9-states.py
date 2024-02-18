@@ -3,6 +3,7 @@
 
 from flask import Flask, render_template
 from models import storage
+import models
 from models.state import State
 from models.city import City
 
@@ -20,7 +21,6 @@ def show_states(id=None):
         return render_template('9-states.html', states=None, state=None)
     return render_template('9-states.html',
                            states=states.values(), state=state)
-
 
 
 @app.teardown_appcontext
