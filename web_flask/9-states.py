@@ -9,30 +9,20 @@ from models.city import City
 app = Flask(__name__)
 
 
+@app.route('/states', strict_slashes=False)
+@app.route('/states/<state_id>', strict_slashes=False)
+def states(state_id=None):
+    """display the states and cities listed in alphabetical order"""
+    states = storage.all("State")
+    if state_id is not None:
+        state_id = 'State.' + state_id
+    return render_template('9-states.html', states=states, state_id=state_id)
+
+
 @app.teardown_appcontext
 def close_session(exception):
     """Remove the current SQLAlchemy Session after each request."""
     storage.close()
-
-
-@app.route('/states', strict_slashes=False)
-def display_states():
-    """Display a HTML page with a list of all State objects."""
-    states = storage.all(State).values()
-    sorted_states = sorted(states, key=lambda x: x.name)
-
-    return render_template('9-states.html', states=sorted_states)
-
-
-@app.route('/states/<id>', strict_slashes=False)
-def display_state_cities(id):
-    """Display a HTML page with the list of City objects linked to the State."""
-    state = storage.get(State, id)
-    if state:
-        cities = sorted(state.cities, key=lambda x: x.name)
-        return render_template('9-states.html', state=state, cities=cities)
-    else:
-        return render_template('9-states.html', not_found=True)
 
 
 if __name__ == '__main__':
